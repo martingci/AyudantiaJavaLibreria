@@ -67,10 +67,14 @@ public class Libro {
 
     public void prestar() {
         this.cantidad--;
+        if (this.cantidad == 0) {
+            this.disponible = false;
+        }
     }
 
     public void devolver() {
         this.cantidad++;
+        this.disponible = true;
     }
 
     public void mostrarInfo () {
@@ -80,8 +84,6 @@ public class Libro {
         System.out.print("| Genero: " + this.genero);
         System.out.print("| Cantidad Disponible: " + this.cantidad);
         System.out.print("| Disponible: " + this.disponible);
+        System.out.println();
     }
-
-
-
 }

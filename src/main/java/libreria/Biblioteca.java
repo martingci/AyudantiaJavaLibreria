@@ -19,18 +19,17 @@ public class Biblioteca {
         return true;
     }
 
-    public boolean agregarLibro (String isbn, String titulo, String autor, String genero, int cantidad, boolean disponible) {
-        if (libroUnico(isbn)) {
-           Libro libro = new Libro(isbn, titulo, autor, genero, cantidad, disponible);
+    public boolean agregarLibro (Libro libro) {
+        if (libroUnico(libro.getIsbn())) {
            this.libros.add(libro);
            return true;
         } else {
-            buscarLibro(isbn).devolver();
+            buscarLibroPorIsbn(libro.getIsbn()).devolver();
             return false;
         }
     }
 
-    public Libro buscarLibro (String isbn) {
+    public Libro buscarLibroPorIsbn(String isbn) {
         for (Libro libro : this.libros) {
             if (libro.getIsbn().equals(isbn)) {
                 return libro;
@@ -39,7 +38,16 @@ public class Biblioteca {
         return null;
     }
 
-    public void MostrarLibrosDisponibles () {
+    public Libro buscarLibroPorTitulo (String titulo) {
+        for (Libro libro : this.libros) {
+            if (libro.getTitulo().equals(titulo)) {
+                return libro;
+            }
+        }
+        return null;
+    }
+
+    public void mostrarLibrosDisponibles () {
         for (Libro libro : this.libros) {
             if (libro.isDisponible()) {
                 libro.mostrarInfo();
@@ -47,8 +55,49 @@ public class Biblioteca {
         }
     }
 
+    public boolean mostrarLibroPorTitulo (String titulo) {
+        for (Libro libro : this.libros) {
+            if (libro.getTitulo().equals(titulo)) {
+                libro.mostrarInfo();
+                return true;
+            }
+        }
+        return false;
+    }
 
+    public boolean mostrarLibrosPorAutor (String autor) {
+        for (Libro libro : this.libros) {
+            if (libro.getAutor().equals(autor)) {
+                libro.mostrarInfo();
+            }
+        }
+        return false;
+    }
 
+    public boolean eliminarLibro (String titulo) {
+        Libro libro = this.buscarLibroPorIsbn(titulo);
+        if (libro != null && !libro.isDisponible())  {
+            this.libros.remove(libro);
+            return true;
+        }
+        return false;
+    }
 
+    public boolean prestarLibro (String titulo) {
+        Libro libro = this.buscarLibroPorTitulo(titulo);
+        if (libro != null && libro.isDisponible())  {
+            libro.prestar();
+            return true;
+        }
+        return false;
+    }
 
+    public boolean devolverLibro (String titulo) {
+        Libro libro = this.buscarLibroPorTitulo(titulo);
+        if (libro != null)  {
+            libro.devolver();
+            return true;
+        }
+        return false;
+    }
 }
